@@ -85,7 +85,7 @@ const addDepartment = () => {
 
 const addRole = () => {
     db.findDepartments()
-        // Insert the data as an array of objects
+        // Insert the data as an array so we only get the data we need
         .then(([departments]) => {
             const departmentList = departments.map(({ ID, Department }) => (
                 // Reassign key names to fit inquirer's "choices" formatting
@@ -117,6 +117,45 @@ const addRole = () => {
                 .then(() => mainMenu());
             });
         })
+};
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            name: "name",
+            message: "What is the first and last name of the new employee?"
+        }
+    ])
+    .then(data => {
+        let firstName = data.name.split(' ')[0];
+        const lastName = data.name.split(' ')[1];
+
+        // Copy format to find roles and managers
+        db.findRoles()
+            .then(([roles]) => {
+                const roleList = roles.map(({ ID, Job_Title }) => (
+                    // Reassign key names to fit inquirer's "choices" formatting
+                    {
+                        name: Job_Title,
+                        value: ID
+                    }
+                ));
+
+                console.log(roleList)
+                console.log(firstName)
+                console.log(lastName);
+    
+                inquirer.prompt([
+                    {
+                        name: "role_id",
+                        message: "What is the new employee's role?"
+                    }
+                ])
+
+
+
+            })
+    })
 };
 
 
