@@ -33,6 +33,10 @@ class DB {
     createEmployee(employee) {
         return this.connection.promise().query("INSERT INTO employee SET ?", employee)
     }
+
+    changeEmployeeRole(employeeID, roleID) {
+        return this.connection.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [roleID, employeeID]);
+      }
 }
 
 module.exports = new DB(connection);

@@ -193,6 +193,60 @@ const addEmployee = () => {
     })
 };
 
+const updateEmployeeRole = () => {
+    db.findEmployees()
+        .then(([employees]) => {
+            const employeeList = employees.map(employee => (
+                {
+                    name: `${employee.First_Name} ${employee.Last_Name}`,
+                    value: employee
+                }
+            ));
+
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "employee",
+                    message: "Which employee would you like to update?",
+                    choices: employeeList
+                }
+            ])
+            .then(data => {
+                const employeeID = data.employee.ID;
+                const employeeName = `${data.employee.First_Name} ${data.employee.Last_Name}`
+
+                db.findRoles()
+                    .then(([roles]) => {
+                        const roleList = roles.map(({ ID, Job_Title }) => (
+                            // Reassign key names to fit inquirer's "choices" formatting
+                            {
+                                name: Job_Title,
+                                value: ID
+                            }
+                        ));
+            
+                        inquirer.prompt([
+                            {
+                                type: "list",
+                                name: "role_id",
+                                message: "What is the employee's new role?",
+                                choices: roleList
+                            }
+                        ])
+                        .then(data => {
+                            const roleID = data.role_id;
+
+                            db.changeEmployeeRole(employeeID, roleID)
+                                .then(() => console.log(`\n${employeeName}'s role has been updated!\n`))
+                                .then(() => mainMenu());
+                        })
+                    })
+
+            })
+
+        })
+};
+
 
 
 mainMenu();
