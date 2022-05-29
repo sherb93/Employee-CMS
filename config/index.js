@@ -22,8 +22,12 @@ class DB {
         return this.connection.promise().query("SELECT employee.id AS ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Job_Title, department.name AS Department, role.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;");
     }
 
-    createDepartment(name) {
-        return this.connection.promise().query("INSERT INTO department SET ?", name)
+    createDepartment(department) {
+        return this.connection.promise().query("INSERT INTO department SET ?", department)
+    }
+
+    createRole(role) {
+        return this.connection.promise().query("INSERT INTO role SET ?", role)
     }
 }
 
