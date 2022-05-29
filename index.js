@@ -45,28 +45,43 @@ const mainMenu = function() {
                     break;
             }
         })
-}
+};
 
 const viewDepartments = () => {
     db.findDepartments().then(([departments]) => {
         console.table(departments);
     })
     .then(() => mainMenu());
-}
+};
 
 const viewRoles = () => {
     db.findRoles().then(([roles]) => {
         console.table(roles);
     })
     .then(() => mainMenu());
-}
+};
 
 const viewEmployees = () => {
     db.findEmployees().then(([employees]) => {
         console.table(employees);
     })
     .then(() => mainMenu());
-}
+};
+
+const addDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                name: "name",
+                message: "What is the name of the new department?"
+            }
+        ])
+        .then(data => {
+            db.createDepartment(data)
+            .then(() => console.log(`\n ${data.name} department successfully created!\n`))
+            .then(() => mainMenu());
+        });
+};
 
 
 
