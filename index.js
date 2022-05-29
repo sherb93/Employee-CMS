@@ -83,6 +83,42 @@ const addDepartment = () => {
         });
 };
 
+const addRole = () => {
+    db.findDepartments()
+        // Insert the data as an array of objects
+        .then(([departments]) => {
+            const departmentList = departments.map(({ ID, Department }) => (
+                // Reassign key names to fit inquirer's "choices" formatting
+                {
+                    name: Department,
+                    value: ID
+                }
+            ));
+
+            inquirer.prompt([
+                {
+                    name: "title",
+                    message: "What is the name of the new role?"
+                },
+                {
+                    name: "salary",
+                    message: "What is the salary of the new role?"
+                },
+                {
+                    type: "list",
+                    name: "department_id",
+                    message: "Which department will this role belong to?",
+                    choices: departmentList
+                }
+            ])
+            .then(data => {
+                db.createRole(data)
+                .then(() => console.log(`\n ${data.title} role successfully created!\n`))
+                .then(() => mainMenu());
+            });
+        })
+};
+
 
 
 mainMenu();
