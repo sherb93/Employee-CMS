@@ -6,15 +6,19 @@ class DB {
     }
 
     findDepartments() {
-        return this.connection.promise().query("SELECT * FROM department");
+        return this.connection.promise().query("SELECT id AS ID, name AS Department FROM department");
     }
 
     findRoles() {
-        return this.connection.promise().query("SELECT * FROM roles");
+        // Select all necessary 
+        return this.connection.promise().query("SELECT role.id AS ID, role.title AS Job_Title, department.name AS Department, role.salary AS Salary FROM role LEFT JOIN department on role.department_id = department.id");
     }
 
     findEmployees() {
-        return this.connection.promise().query("SELECT * FROM employees");
+        // Select everything from employees
+        // Make left joins for role and department so queries can be properly referenced
+        // Left Join employees for manager reference
+        return this.connection.promise().query("SELECT employee.id AS ID, employee.first_name AS First_Name, employee.last_name AS Last_Name, role.title AS Job_Title, department.name AS Department, role.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;");
     }
 
 

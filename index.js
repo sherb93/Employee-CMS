@@ -62,7 +62,7 @@ const viewRoles = () => {
 }
 
 const viewEmployees = () => {
-    db.findRoles().then(([employees]) => {
+    db.findEmployees().then(([employees]) => {
         console.table(employees);
     })
     .then(() => mainMenu());
