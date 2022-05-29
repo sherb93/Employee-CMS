@@ -127,7 +127,7 @@ const addEmployee = () => {
         }
     ])
     .then(data => {
-        let firstName = data.name.split(' ')[0];
+        const firstName = data.name.split(' ')[0];
         const lastName = data.name.split(' ')[1];
 
         // Copy format to find roles and managers
@@ -140,17 +140,52 @@ const addEmployee = () => {
                         value: ID
                     }
                 ));
-
-                console.log(roleList)
-                console.log(firstName)
-                console.log(lastName);
     
                 inquirer.prompt([
                     {
+                        type: "list",
                         name: "role_id",
-                        message: "What is the new employee's role?"
+                        message: "What is the new employee's role?",
+                        choices: roleList
                     }
                 ])
+                .then(data => {
+                    const roleId = data.role_id;
+
+                    db.findEmployees()
+                        .then(([employees]) => {
+                            // Only use managers by filtering thought employees array
+                            const managers = employees.filter(employee => employee.Manager === null);
+
+                            const managerList = managers.map(({ ID, First_Name, Last_Name }) => (
+                                {
+                                    name: `${First_Name} ${Last_Name}`,
+                                    value: ID
+                                }
+                            ));
+
+                            inquirer.prompt([
+                                {
+                                    type: "list",
+                                    name: "manager_id",
+                                    message: "Who is the new employee's manager?",
+                                    choices: managerList
+                                }
+                            ])
+                            .then(data => {
+                                const newEmployee = {
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    role_id: roleId,
+                                    manager_id: data.manager_id,
+                                }
+
+                                db.createEmployee(newEmployee)
+                                    .then(() => console.log(`\n${firstName} ${lastName} has been added to the roster!\n`))
+                                    .then(() => mainMenu());
+                            })
+                        })
+                })
 
 
 
