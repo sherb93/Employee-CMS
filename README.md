@@ -16,3 +16,10 @@ Use your personal mySQL credentials in the connection.js file to run mySQL throu
 The database can be created using the schema.sql file inside the "db" folder and mock data is available in the seeds.sql file.
 
 Once you're ready to run the program, use an integrated terminal inside your code editor to run the command "npm i" to install all of the npm libraries located in the package.json file. After that's complete, run the command "node index.js" and play around with it. I hope you find it useful.
+
+## Demo
+
+https://user-images.githubusercontent.com/95831392/170896067-decbba5c-5679-475b-85fc-c43fb27f3ef1.mp4
+
+
+
