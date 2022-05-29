@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const db = require("./config/index");
+const db = require("./db/queries");
 const cTable = require("console.table");
 
 const mainMenu = function() {
